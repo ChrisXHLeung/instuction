@@ -29,11 +29,11 @@ Alternatively, via the command line (if familiar):
 ──────────────────────────────
 ## 3. Admin Authorization via ZeroTier Central  
 
-A. Log in to ZeroTier Central (https://my.zerotier.com) with your administrative account.  
-B. Navigate to your network’s “Members” list.  
-C. You will see new devices appearing once users join the network. Each device will be listed with a unique Node ID.  
-D. For security, make sure to check (authorize) the checkbox next to each new device. This “Auth” step allows them to communicate on the network.  
-E. Optionally, assign meaningful names or tags so you can easily identify users later.  
+Log in to ZeroTier Central (https://my.zerotier.com) with your administrative account.  
+Navigate to your network’s “Members” list.  
+You will see new devices appearing once users join the network. Each device will be listed with a unique Node ID.  
+For security, make sure to check (authorize) the checkbox next to each new device. This “Auth” step allows them to communicate on the network.  
+Optionally, assign meaningful names or tags so you can easily identify users later.  
 
 ──────────────────────────────
 ## 4. Logging in via SSH to the Bunker  
