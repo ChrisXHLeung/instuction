@@ -46,6 +46,7 @@ Risks & Mitigations: Bastion compromise (harden server), network misconfiguratio
 
 Assumptions: Basic Linux skills, cloud provider access (e.g., AWS, Azure), admin privileges.
 
+```
 +--------------------+
 | Remote Devices     |
 | - Dev Laptop       |
@@ -69,6 +70,7 @@ Assumptions: Basic Linux skills, cloud provider access (e.g., AWS, Azure), admin
 | - UAT Environment  |
 | - Prod Environment |
 +--------------------+
+```
 
 Diagram Explanation:
 
