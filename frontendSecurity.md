@@ -68,29 +68,18 @@ The critical advantages are clear:
 
 ### Password vs Token Authentication  
 
-```
-Password-Based Authentication            Token-Based Authentication (Keychron)
-------------------------------            ---------------------------------------
-- Static secret must be remembered        - Dynamic token issued after one login
-- Reused with every request               - Token replaces passwords in future use
-- DB breach compromises all accounts      - Token theft limited by expiry/revocation
-- Vulnerable to phishing & stuffing       - Resistant to replay, supports MFA/SSO
-- Difficult to scale across APIs          - Stateless verification ideal for cloud
-```
+| Feature           | Password-Based Authentication                | Token-Based Authentication (Keychron + JWT) |
+|-------------------|---------------------------------------------|---------------------------------------------|
+| Secret Type       | Static password (must be remembered)        | Dynamic token issued after one login        |
+| Usage per Request | Password reused on every request            | Token replaces passwords for future use     |
+| Breach Impact     | DB breach compromises all accounts          | Token theft limited by expiry/revocation    |
+| Attack Resistance | Vulnerable to phishing & credential stuffing| Resistant to replay; supports MFA/SSO       |
+| Scalability       | Difficult to scale across multiple APIs     | Stateless verification, ideal for cloud     |
 
 ### Visual Comparison  
 
-**Password Model**  
-```
-[User enters password] → [Server checks DB each time] → [Access granted] → (Password reused repeatedly, exposed to risk)
-```
+![Security login](https://raw.githubusercontent.com/ChrisXHLeung/instuction/refs/heads/main/frontendSecurity_login.png)
 
-**Keychron Token Model**  
-```
-[User authenticates initially] → [Keychron issues JWT with expiry] 
-    → [Client stores token securely] → [Token presented on each request] 
-    → [Server validates signature statelessly] → [Access granted]
-```
 
 📌 *Observation*: Passwords are persistent liabilities by design, whereas tokens are perishable, revocable, and decoupled from central credential stores.  
 
