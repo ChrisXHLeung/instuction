@@ -5,7 +5,7 @@
 
 ## Introduction: Why SMEs Must Prioritize SME Web Security  
 
-Small and medium-sized enterprises (SMEs) often focus on new services, customer acquisition, and operational efficiency to stay competitive. However, many neglect **SME web security**, mistakenly assuming they can address it later without consequences. This oversight exposes SMEs to automated bots, opportunistic hackers, and phishing campaigns that target their weaker defenses and limited response capabilities. To protect their systems, SMEs must adopt robust solutions like [Nginx](https://nginx.org) and [Keychron authentication](#layer-2-identity-defense-with-keychron-token-based-authentication). Learn more about [web security best practices](/web-security-best-practices) to ensure business continuity.
+Small and medium-sized enterprises (SMEs) often focus on new services, customer acquisition, and operational efficiency to stay competitive. However, many neglect **SME web security**, mistakenly assuming they can address it later without consequences. This oversight exposes SMEs to automated bots, opportunistic hackers, and phishing campaigns that target their weaker defenses and limited response capabilities. Solutions like [Nginx](https://nginx.org) and Keychron authentication strengthen **SME web security**, ensuring business continuity.
 
 Unlike large corporations, SMEs typically lack dedicated security teams. A single breach—whether from SQL injection or weak password reuse—can disrupt operations and erode trust with customers and partners. Therefore, SMEs must treat **SME web security** as a **strategic foundation** for reliability and growth.
 
@@ -15,9 +15,9 @@ Unlike large corporations, SMEs typically lack dedicated security teams. A singl
 
 The HTTP request pipeline serves as the outermost entry point for any web system, where SMEs must block malicious activity to ensure **SME web security**. While application developers should implement sanitization and validation in their code, expecting every team to counter the sophistication of global web exploits is unrealistic.  
 
-To address this, SMEs can deploy a **reverse proxy like Nginx, enhanced with the ModSecurity engine and powered by the OWASP Core Rule Set (CRS)**. Together, these tools form a **Web Application Firewall (WAF)** that actively inspects requests in real time, matches them against updated patterns of known attack vectors, logs suspicious activity, and blocks requests showing signs of SQL injection, cross-site scripting, command injection, file inclusion, or other anomalies. For detailed WAF setup, see our [Nginx WAF guide](/nginx-waf-setup-guide).  
+To address this, SMEs can deploy a **reverse proxy like Nginx, enhanced with the ModSecurity engine and powered by the OWASP Core Rule Set (CRS)**. Together, these tools form a **Web Application Firewall (WAF)** that actively inspects requests in real time, matches them against updated patterns of known attack vectors, logs suspicious activity, and blocks requests showing signs of SQL injection, cross-site scripting, command injection, file inclusion, or other anomalies. For more details, see the [OWASP CRS documentation](https://owasp.org/www-project-core-rule-set/).  
 
-For example, if a malicious actor tries to input "`UNION SELECT`" through a form field or URL parameter, the WAF with CRS rules detects this as an SQL injection attempt and neutralizes it before it reaches the query processor. Similarly, the WAF flags path traversal attempts like "`../../etc/passwd`" as critical anomalies and traps JavaScript payload injections as potential XSS attacks. By filtering such requests at the edge, the WAF prevents the startup’s application code from bearing the burden of recognizing these threats. Explore the [OWASP CRS documentation](https://owasp.org/www-project-core-rule-set/) for more details.
+For example, if a malicious actor tries to input "`UNION SELECT`" through a form field or URL parameter, the WAF with CRS rules detects this as an SQL injection attempt and neutralizes it before it reaches the query processor. Similarly, the WAF flags path traversal attempts like "`../../etc/passwd`" as critical anomalies and traps JavaScript payload injections as potential XSS attacks. By filtering such requests at the edge, the WAF prevents the startup’s application code from bearing the burden of recognizing these threats.
 
 ### Startup Deployment with WAF  
 
@@ -59,9 +59,9 @@ However, **Layer 1 defends against malicious traffic patterns, not malicious use
 
 After filtering malicious requests, SMEs must verify whether the *human* or *application* making the request belongs to the system and deserves access. Historically, passwords have addressed this, but they carry significant weaknesses: attackers can guess, reuse, phish, purchase from data dumps, or brute-force passwords; password databases create a centralized liability; and scaling password validation across microservices and APIs increases latency and user friction.  
 
-**Keychron directly tackles this identity vulnerability** by shifting from a password-centric model to a **token-based system**, enhancing **SME web security**. In this approach, the system verifies a password (or SSO credential, or MFA challenge) only once. After this initial handshake, **Keychron generates a signed JSON Web Token (JWT)** that encodes critical claims like user identity, role, and token expiry. Learn more about [JWT implementation](/jwt-authentication-guide).  
+**Keychron directly tackles this identity vulnerability** by shifting from a password-centric model to a **token-based system**, enhancing **SME web security**. In this approach, the system verifies a password (or SSO credential, or MFA challenge) only once. After this initial handshake, **Keychron generates a signed JSON Web Token (JWT)** that encodes critical claims like user identity, role, and token expiry. For further reading, check [Keycloak’s JWT guide](https://www.keycloak.org/docs/latest/server_admin/#_jwt).  
 
-From then on, the client uses the token instead of a password for each request. The application validates the token’s signature cryptographically, typically using algorithms like RS256 or HS256. Since this validation is stateless, it requires no database lookup, enabling horizontal scaling with minimal latency. For further reading, check [Keycloak’s JWT guide](https://www.keycloak.org/docs/latest/server_admin/#_jwt).
+From then on, the client uses the token instead of a password for each request. The application validates the token’s signature cryptographically, typically using algorithms like RS256 or HS256. Since this validation is stateless, it requires no database lookup, enabling horizontal scaling with minimal latency.
 
 The benefits are clear:  
 - Compromised databases no longer expose active passwords.  
@@ -152,8 +152,6 @@ Keychron’s experience informs several practices that SMEs can adopt without ex
 
 5. **Test Recovery Routinely**  
    Recovery drills matter as much as backups. A backup that fails under pressure is useless, and authentication services must factor into these exercises.  
-
-For additional tips, see our [SME cybersecurity checklist](/sme-cybersecurity-checklist).
 
 ---
 
