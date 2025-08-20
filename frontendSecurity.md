@@ -1,6 +1,6 @@
 # SME Security with Nginx, ModSecurity, and Keychron Authentication
 ---
-![enter image description here](https://raw.githubusercontent.com/ChrisXHLeung/instuction/refs/heads/main/frontendSecurity.png)
+![Diagram](https://raw.githubusercontent.com/ChrisXHLeung/instuction/refs/heads/main/frontendSecurity.png)
 ## Introduction: Why SMEs Cannot Ignore System Security  
 
 For small and medium-sized enterprises (SMEs), competition often drives a strong focus on new services, customer acquisition, and operational efficiency. However, **system security** is frequently postponed, as if it could be added later without consequence. This misconception leaves SMEs exposed to an environment where automated bots, opportunistic hackers, and phishing campaigns target them precisely because defenses are weaker and response capabilities are limited.  
@@ -97,6 +97,8 @@ Password-Based Authentication            Token-Based Authentication (Keychron)
 ---
 
 ## Dual-Layer Security: Integrating Infrastructure Defense with Keychron  
+
+![Security2layer](https://raw.githubusercontent.com/ChrisXHLeung/instuction/refs/heads/main/frontendSecurity_main.png)
 
 When both layers are combined, a startup gains **defense in depth**.  
 
