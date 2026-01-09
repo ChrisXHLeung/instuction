@@ -1,0 +1,35 @@
+%%{init: {"theme":"base"}}%%
+flowchart LR
+    subgraph DataStorage
+        A[Item History Data]
+    end
+
+    subgraph EvaluationEngine
+        B[Trigger Expression]
+        C[Threshold / Logical Evaluation]
+    end
+
+    subgraph EventLifecycle
+        D[Problem Event Created]
+        E[Recovery Event Created]
+    end
+
+    subgraph ActionEngine
+        F[Action Condition Matching]
+        G[Operation Execution]
+    end
+
+    subgraph Notification
+        H[Email Notification]
+        I[Webhook / HTTP API]
+        J[Automation / Remote Command]
+    end
+
+    A --> B --> C
+    C -->|Expression TRUE| D
+    C -->|Expression FALSE| E
+
+    D --> F --> G
+    G --> H
+    G --> I
+    G --> J

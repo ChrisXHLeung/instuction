@@ -1,0 +1,28 @@
+%%{init: {"theme":"base"}}%%
+flowchart LR
+    subgraph TargetHost
+        A[Application / Service]
+        A --> A1["Built-in Metrics Endpoint - metrics"]
+        A --> A2["Custom Exporter Script"]
+    end
+
+    subgraph SecureChannel
+        B["HTTPS / mTLS / Authenticated Connection"]
+    end
+
+    subgraph PrometheusServer
+        C[Prometheus Scrape Scheduler]
+        D[Collected Metric Processing]
+        E[Time Series Database TSDB]
+    end
+
+    subgraph UserView
+        F[Grafana / Prometheus UI]
+        G[Graphs / Dashboards / Alerts]
+    end
+
+    A1 -->|Scrape| B
+    A2 -->|Scrape| B
+    B --> C
+    C --> D --> E
+    E --> F --> G

@@ -1,0 +1,28 @@
+%%{init: {"theme":"base"}}%%
+flowchart LR
+    subgraph ClientHost
+        A[Zabbix Agent]
+        A --> A1[Built-in Metrics]
+        A --> A2[UserParameter / Script]
+    end
+
+    subgraph SecureChannel
+        B[TLS / PSK / Certificate]
+    end
+
+    subgraph ControlPlane
+        C[Zabbix Proxy or Server]
+        D[Item Value Processing]
+        E[Zabbix Database]
+    end
+
+    subgraph UserView
+        F[Zabbix Web UI]
+        G[Graphs / Latest Data]
+    end
+
+    A1 -->|Encrypted Connection| B
+    A2 -->|Encrypted Connection| B
+    B --> C
+    C --> D --> E
+    E --> F --> G
