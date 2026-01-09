@@ -1,0 +1,35 @@
+%%{init: {"theme":"base"}}%%
+flowchart LR
+    subgraph DataStorage
+        A[TSDB Stored Metrics]
+    end
+
+    subgraph EvaluationEngine
+        B[PromQL Expression]
+        C[Threshold / Logical Evaluation]
+    end
+
+    subgraph EventLifecycle
+        D[Alert Firing Event]
+        E[Alert Resolved Event]
+    end
+
+    subgraph ActionEngine
+        F[Alertmanager Route Matching]
+        G[Notification / Operation Execution]
+    end
+
+    subgraph Notification
+        H[Email / Slack / PagerDuty]
+        I[Webhook / HTTP API]
+        J[Custom Automation / Script]
+    end
+
+    A --> B --> C
+    C -->|Expression TRUE| D
+    C -->|Expression FALSE| E
+
+    D --> F --> G
+    G --> H
+    G --> I
+    G --> J
