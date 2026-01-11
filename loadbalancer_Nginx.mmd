@@ -1,0 +1,24 @@
+%%{init: {"theme":"base"}}%%
+flowchart LR
+    Client["Service Network<br/>Internal Clients"] --> Nginx
+
+    Nginx["Nginx Upstream<br/>Intelligent Dispatcher<br/>Passive Health Checks<br/>max_fails / fail_timeout"]
+
+    subgraph AppPool["Application Worker Pool"]
+        direction TB
+        App1["App-1<br/>API Instance"]
+        App2["App-2<br/>API Instance"]
+        App3["App-3<br/>API Instance"]
+    end
+
+    Nginx --> App1
+    Nginx --> App2
+    Nginx --> App3
+
+    %% Failure detection
+    App2 -.->|"HTTP 5xx<br/>Timeout"| Nginx
+    Nginx -.->|"Marked Down<br/>Removed from Pool"| App2
+
+    %% Healthy routing
+    Nginx -->|"Traffic Rebalanced"| App1
+    Nginx -->|"Traffic Rebalanced"| App3

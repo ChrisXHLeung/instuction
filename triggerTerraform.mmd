@@ -1,0 +1,31 @@
+%%{init: {"theme":"base"}}%%
+sequenceDiagram
+    participant Z as Zabbix<br/>Monitoring
+    participant C as CI/CD Pipeline
+    participant T as Terraform
+    participant V as Proxmox / ESXi
+    participant O as Old VM<br/>(Drifted)
+    participant N as New VM<br/>(From Template)
+    participant CL as Service Cluster
+
+    %% Detection
+    Z->>C: Webhook<br/>Persistent Failure or Drift Detected
+
+    %% Trigger Terraform
+    C->>T: terraform taint vm_X
+    C->>T: terraform apply
+
+    %% Destroy old VM
+    T->>V: Destroy VM_X
+    V-->>O: Power Off + Delete
+
+    %% Recreate new VM
+    T->>V: Clone from Cloud-Init Template
+    V-->>N: New VM Created<br/>Clean OS
+
+    %% Bootstrap
+    N->>N: Cloud-init<br/>Install Agent, Nginx, App
+    N->>CL: Join Load Balancer Pool
+
+    %% Final state
+    CL-->>C: Healthy Node Registered

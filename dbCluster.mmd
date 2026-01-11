@@ -1,0 +1,18 @@
+%%{init: {"theme":"base"}}%%
+flowchart LR
+    App["Application Tier<br/>API / Services"] --> DBLayer
+
+    DBLayer["DB Access Layer<br/>Query Classifier<br/>Normal vs Heavy Queries"]
+
+    %% Normal path
+    DBLayer -->|"Writes<br/>INSERT / UPDATE / DELETE"| Master
+    DBLayer -->|"Normal Reads<br/>OLTP Queries"| Master
+
+    %% Heavy read path
+    DBLayer -->|"Heavy Reads<br/>Reports / Analytics"| Slave
+
+    Master["DB Master<br/>Primary<br/>OLTP + Writes"]
+    Slave["DB Slave<br/>Read Replica<br/>Heavy Queries"]
+
+    %% Replication
+    Master -->|"Real-time Replication<br/>Binlog / WAL"| Slave

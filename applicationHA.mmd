@@ -1,0 +1,56 @@
+%%{init: {"theme":"base"}}%%
+flowchart LR
+    %% =====================
+    %% Traffic Entry Tier
+    %% =====================
+    Client["Client / Internet"] --> VIP
+
+    VIP["Virtual IP (VIP)<br/>Service Identity<br/>VRRP + Keepalived"]
+
+    subgraph LBCluster["Traffic Entry Tier"]
+        direction TB
+        LB1["LB-1<br/>Nginx<br/>Keepalived<br/>MASTER"]
+        LB2["LB-2<br/>Nginx<br/>Keepalived<br/>BACKUP"]
+        LB1 ---|"VRRP Heartbeat"| LB2
+    end
+
+    VIP --> LB1
+    VIP -.->|"Failover"| LB2
+
+    %% =====================
+    %% Application Tier
+    %% =====================
+    LB1 --> Upstream
+    LB2 --> Upstream
+
+    Upstream["Nginx Upstream<br/>Intelligent Dispatcher<br/>Passive Health Checks<br/>max_fails / fail_timeout"]
+
+    subgraph AppPool["Application Orchestration Tier"]
+        direction TB
+        App1["App-1<br/>API Instance"]
+        App2["App-2<br/>API Instance"]
+        App3["App-3<br/>API Instance"]
+    end
+
+    Upstream --> App1
+    Upstream --> App2
+    Upstream --> App3
+
+    App2 -.->|"5xx / Timeout"| Upstream
+    Upstream -.->|"Marked Down"| App2
+
+    %% =====================
+    %% Data Tier
+    %% =====================
+    App1 --> DBLayer
+    App3 --> DBLayer
+
+    DBLayer["DB Access Layer<br/>Query Classifier<br/>Normal vs Heavy Queries"]
+
+    DBLayer -->|"Writes<br/>Normal Reads"| Master
+    DBLayer -->|"Heavy Reads<br/>Reports"| Slave
+
+    Master["DB Master<br/>Primary<br/>OLTP + Writes"]
+    Slave["DB Slave<br/>Read Replica<br/>Heavy Queries"]
+
+    Master -->|"Real-time Replication<br/>Binlog / WAL"| Slave
