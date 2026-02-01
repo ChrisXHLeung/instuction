@@ -1,0 +1,19 @@
+%%{init: {"theme":"base"}}%%
+flowchart TB
+ subgraph Layer1["Layer 1: Distributed Storage"]
+    direction LR
+        Pool[("Local-Accelerated Pool")]
+  end
+ subgraph Layer2["Layer 2: Hot Data Shadowing"]
+        S3[("Cloud Object Storage")]
+  end
+ subgraph Layer3["Layer 3: Cold Archive"]
+        Archive[("Offline/Air-Gapped Archive")]
+  end
+    Pool -. "Real-time Shadowing" .-> Layer2
+    Pool -. Periodic Immutable Backup .-> Layer3
+
+    style Pool fill:#0288d1,color:#fff
+    style Layer2 fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style Layer1 fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    style Layer3 fill:#f1f8e9,stroke:#33691e,stroke-width:2px

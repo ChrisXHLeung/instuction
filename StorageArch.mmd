@@ -1,0 +1,33 @@
+graph TD
+    subgraph "Local Body: 3-Node Proxmox + Ceph HCI"
+        direction TB
+        NodeA[Node A<br>Compute + OSD + MON] -->|EC 2+1| HotPool[Hot Pool<br>Active Data: VMs, DBs, Logs<br>High IOPS, NVMe/SSD]
+        NodeB[Node B<br>Compute + OSD + MON] -->|EC 2+1| HotPool
+        NodeC[Node C<br>Compute + OSD + MON] -->|EC 2+1| HotPool
+        
+        NodeA -->|EC Capacity| ColdPool[Cold Pool<br>Backups, Archives, Static Assets<br>High Density HDDs]
+        NodeB -->|EC Capacity| ColdPool
+        NodeC -->|EC Capacity| ColdPool
+        
+        HotPool -->|Daily Operations| SaaS[SaaS Services]
+        ColdPool -->|Local Restoration| SaaS
+    end
+    
+    subgraph "Cloud Shadow: Site-Level Failover"
+        direction LR
+        CloudObject[Cloud Object Storage<br>e.g. S3-compatible<br>Immutable / Versioned]
+        CloudCompute[Cloud Compute Instances<br>Terraform IaC Spin-up<br>Mirror Local Env]
+    end
+    
+    HotPool -.->|Asynchronous Differential Streaming<br>Changed Blocks + Logs<br>Background, Decoupled I/O| CloudObject
+    CloudObject -->|On-Demand Restore to Block Storage| CloudCompute
+    CloudCompute -->|Temporary SaaS Operation| SaaS
+    
+    SaaS -.->|Delta Sync Back<br>During Repatriation| CloudObject
+    CloudObject -.->|Final Sync to Rebuild Hot Pool| HotPool
+    
+    style HotPool fill:#a8dadc,stroke:#457b9d
+    style ColdPool fill:#e9ecef,stroke:#6c757d
+    style CloudObject fill:#ffe066,stroke:#d4a017
+    style CloudCompute fill:#ffd166,stroke:#ef476f
+    style SaaS fill:#90be6d,stroke:#43aa8b
